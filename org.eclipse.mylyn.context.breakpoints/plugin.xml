@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+
+   <extension point="org.eclipse.ui.viewActions"> 
+	 <viewContribution
+         id="org.eclipse.mylyn.java.ui.markers.breakpoints.contribution"
+         targetID="org.eclipse.debug.ui.BreakpointView">
+      <action
+            class="org.eclipse.mylyn.context.breakpoints.ui.FocusBreakpointsViewAction"
+            disabledIcon="icons/elcl16/focus-disabled.gif"
+            enablesFor="*"
+            icon="icons/elcl16/focus.gif"
+            id="org.eclipse.mylyn.java.ui.actions.focus.markers.breakpoints"
+            label="%FocusBreakpointsViewAction.label"
+            menubarPath="mylyn"
+            style="toggle"
+            toolbarPath="mylyn"
+            tooltip="%FocusBreakpointsViewAction.tooltip">
+      </action>
+   	</viewContribution> 
+   </extension>
+   <extension
+         point="org.eclipse.mylyn.context.core.contributor">
+      <contentContributor
+            class="org.eclipse.mylyn.internal.context.breakpoints.BreakpointsContextContributor"
+            name="Mylyn Breakpoints Contributor">
+      </contentContributor>
+   </extension>
+</plugin>

@@ -1,0 +1,18 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Mylyn Breakpoints Contributor
+Bundle-SymbolicName: org.eclipse.mylyn.context.breakpoints;singleton:=true
+Bundle-Version: 1.0.0.qualifier
+Bundle-Activator: org.eclipse.mylyn.internal.context.breakpoints.Activator
+Require-Bundle: org.eclipse.ui,
+ org.eclipse.core.runtime,
+ org.eclipse.debug.core,
+ org.eclipse.mylyn.ide.ui,
+ org.eclipse.debug.ui,
+ org.eclipse.mylyn.commons.core,
+ org.eclipse.mylyn.context.core,
+ org.eclipse.mylyn.context.ui
+Bundle-ActivationPolicy: lazy
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Export-Package: org.eclipse.mylyn.context.breakpoints.ui,
+ org.eclipse.mylyn.internal.context.breakpoints;x-internal:=true

@@ -1,0 +1,19 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Breakpoint Tests
+Bundle-SymbolicName: org.eclipse.mylyn.context.tests.breakpoints
+Bundle-Version: 1.0.0.qualifier
+Fragment-Host: org.eclipse.mylyn.context.breakpoints
+Bundle-ActivationPolicy: lazy
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Require-Bundle: org.junit;bundle-version="4.5.0",
+ org.mockito;bundle-version="[1.8.4,2.0.0)",
+ org.objenesis;bundle-version="[1.0.0,2.0.0)",
+ org.hamcrest;bundle-version="[1.0.0,2.0.0)",
+ org.eclipse.core.runtime,
+ org.eclipse.mylyn.context.sdk.java;bundle-version="3.8.0",
+ org.eclipse.jdt.core;bundle-version="3.7.1",
+ org.eclipse.mylyn.commons.sdk.util;bundle-version="3.8.0",
+ org.eclipse.jdt.debug;bundle-version="3.7.1"
+Import-Package: org.apache.commons.io;version="1.4.0"
+Export-Package: org.eclipse.mylyn.internal.context.breakpoints;x-internal:=true
