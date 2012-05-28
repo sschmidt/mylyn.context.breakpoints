@@ -27,7 +27,7 @@ public class BreakpointsInterestFilter extends AbstractMarkerInterestFilter {
 
 	@Override
 	public boolean select(Viewer viewer, Object parent, Object element) {
-		List<IBreakpoint> contextBreakpoints = Activator.getBreakpointContextListener().getContextBreakpoints();
+		List<IBreakpoint> contextBreakpoints = Activator.getBreakpointContextManager().getContextBreakpoints();
 		if (contextBreakpoints.contains(element)) {
 			return true;
 		} else {

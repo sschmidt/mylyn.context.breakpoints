@@ -18,22 +18,15 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.zip.ZipFile;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
-import org.eclipse.core.resources.IProject;
-import org.eclipse.core.resources.IResource;
-import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.debug.core.DebugException;
 import org.eclipse.debug.core.DebugPlugin;
 import org.eclipse.debug.core.IBreakpointManager;
 import org.eclipse.debug.core.model.IBreakpoint;
 import org.eclipse.jdt.internal.debug.core.breakpoints.JavaLineBreakpoint;
-import org.eclipse.mylyn.commons.sdk.util.CommonTestUtil;
 import org.eclipse.mylyn.context.core.ContextCore;
 import org.eclipse.mylyn.context.core.IInteractionContext;
 import org.eclipse.mylyn.context.core.IInteractionContextManager;
@@ -47,15 +40,13 @@ import org.junit.Test;
  * @author Sebastian Schmidt
  */
 @SuppressWarnings("restriction")
-public class BreakpointsContextUtilTest {
+public class BreakpointsContextUtilTest extends AbstractBreakpointsTest {
 
 	private final String contextFileName = "contextWithBreakpoints.xml.zip"; //$NON-NLS-1$
 
 	private final File contextFile = new File("testdata/" + contextFileName); //$NON-NLS-1$
 
 	private File tempContextFile = null;
-
-	private IProject project;
 
 	private final IInteractionContextManager contextManager = ContextCore.getContextManager();
 
@@ -100,7 +91,7 @@ public class BreakpointsContextUtilTest {
 	@Test
 	public void testExportBreakpoints() throws Exception {
 		createProject();
-		InputStream expectedResult = new FileInputStream(new File("testdata/expectedBreakpointFile.xml")); //$NON-NLS-1$
+		InputStream expectedResult = new FileInputStream(new File("testdata/breakpointFile.xml")); //$NON-NLS-1$
 		IBreakpoint breakpoint = createTestBreakpoint();
 		List<IBreakpoint> breakpoints = new ArrayList<IBreakpoint>();
 		breakpoints.add(breakpoint);
@@ -125,17 +116,5 @@ public class BreakpointsContextUtilTest {
 
 		BreakpointsContextUtil.removeBreakpoints(breakpointsToRemove);
 		assertEquals(currentBreakpoints, breakpointManager.getBreakpoints().length);
-	}
-
-	private IBreakpoint createTestBreakpoint() throws DebugException {
-		IResource testClass = ResourcesPlugin.getWorkspace().getRoot().findMember("/test/src/test.java"); //$NON-NLS-1$
-		return new JavaLineBreakpoint(testClass, "test", 5, 1, 5, 0, true, new HashMap<String, String>()); //$NON-NLS-1$
-	}
-
-	private void createProject() throws Exception {
-		project = WorkspaceSetupHelper.createProject("test"); //$NON-NLS-1$
-		ZipFile zip = new ZipFile(new File("testdata/projects/project.zip")); //$NON-NLS-1$
-		CommonTestUtil.unzip(zip, project.getLocation().toFile());
-		project.refreshLocal(IResource.DEPTH_INFINITE, null);
 	}
 }

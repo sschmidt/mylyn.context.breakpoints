@@ -24,7 +24,7 @@ import org.eclipse.mylyn.context.core.ContextCore;
 /**
  * @author Sebastian Schmidt
  */
-public class BreakpointsContextListener extends AbstractContextListener implements IBreakpointsListener {
+public class BreakpointsContextManager extends AbstractContextListener implements IBreakpointsListener {
 
 	private List<IBreakpoint> contextBreakpoints = new ArrayList<IBreakpoint>();
 
@@ -59,5 +59,9 @@ public class BreakpointsContextListener extends AbstractContextListener implemen
 
 	public List<IBreakpoint> getContextBreakpoints() {
 		return contextBreakpoints;
+	}
+
+	public void setContextBreakpoints(List<IBreakpoint> contextBreakpoints) {
+		this.contextBreakpoints = contextBreakpoints;
 	}
 }

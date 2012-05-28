@@ -35,6 +35,10 @@ import org.eclipse.mylyn.context.core.IInteractionContext;
 public class BreakpointsContextUtil {
 
 	public static InputStream exportBreakpoints(List<IBreakpoint> breakpoints) {
+		if (breakpoints.size() == 0) {
+			return null;
+		}
+
 		ExportBreakpointsOperation exportBreakpointOperation = new ExportBreakpointsOperation(
 				breakpoints.toArray(new IBreakpoint[0]));
 
@@ -57,6 +61,10 @@ public class BreakpointsContextUtil {
 			return new ArrayList<IBreakpoint>();
 		}
 
+		return importBreakpoints(stream);
+	}
+
+	public static List<IBreakpoint> importBreakpoints(InputStream stream) {
 		String breakpoints = new Scanner(stream).useDelimiter("\\A").next(); //$NON-NLS-1$
 		ImportBreakpointsOperation importBreakpointOperation = new ImportBreakpointsOperation(new StringBuffer(
 				breakpoints), true, false);

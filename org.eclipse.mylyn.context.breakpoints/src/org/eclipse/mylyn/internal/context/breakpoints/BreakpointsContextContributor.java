@@ -22,7 +22,7 @@ import org.eclipse.mylyn.context.core.IContextContributor;
 public class BreakpointsContextContributor implements IContextContributor {
 
 	public InputStream getSerializedContextInformation() {
-		List<IBreakpoint> contextBreakpoints = Activator.getBreakpointContextListener().getContextBreakpoints();
+		List<IBreakpoint> contextBreakpoints = Activator.getBreakpointContextManager().getContextBreakpoints();
 		return BreakpointsContextUtil.exportBreakpoints(contextBreakpoints);
 	}
 

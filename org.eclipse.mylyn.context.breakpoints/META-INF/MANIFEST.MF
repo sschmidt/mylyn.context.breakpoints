@@ -16,3 +16,4 @@ Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Export-Package: org.eclipse.mylyn.context.breakpoints.ui,
  org.eclipse.mylyn.internal.context.breakpoints;x-internal:=true
+Import-Package: org.apache.commons.io;version="2.0.1"
