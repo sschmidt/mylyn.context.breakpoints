@@ -12,6 +12,7 @@ package org.eclipse.mylyn.internal.context.breakpoints;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.List;
 
@@ -68,7 +69,11 @@ public class Activator extends AbstractUIPlugin {
 		ISavedState previousPluginState = ResourcesPlugin.getWorkspace().addSaveParticipant(PLUGIN_ID,
 				workspaceSaveParticipant);
 		if (previousPluginState != null) {
-			restorePreviousPluginState(previousPluginState);
+			try {
+				restorePreviousPluginState(previousPluginState);
+			} catch (FileNotFoundException e) {
+				// all good. We just didn't have an active context with breakpoints before.
+			}
 		}
 	}
 
