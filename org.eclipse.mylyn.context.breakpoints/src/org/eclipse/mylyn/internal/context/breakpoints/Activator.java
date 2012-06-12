@@ -14,15 +14,13 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.List;
 
 import org.eclipse.core.resources.ISavedState;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
-import org.eclipse.debug.core.DebugPlugin;
-import org.eclipse.debug.core.model.IBreakpoint;
 import org.eclipse.mylyn.context.core.ContextCore;
+import org.eclipse.mylyn.internal.context.core.ContextCorePlugin;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
 
@@ -39,9 +37,11 @@ public class Activator extends AbstractUIPlugin {
 	// The shared instance
 	private static Activator plugin;
 
-	private static BreakpointsContextManager breakpointContextManager = null;
-
 	private WorkspaceSaveParticipant workspaceSaveParticipant;
+
+	private BreakpointsContextContributor breakpointContextContributor;
+
+	private BreakpointsContextListener breakpointContextListener;
 
 	/**
 	 * The constructor
@@ -61,10 +61,13 @@ public class Activator extends AbstractUIPlugin {
 		super.start(context);
 		plugin = this;
 
-		breakpointContextManager = new BreakpointsContextManager();
-		DebugPlugin.getDefault().getBreakpointManager().addBreakpointListener(breakpointContextManager);
-		ContextCore.getContextManager().addListener(breakpointContextManager);
-		workspaceSaveParticipant = new WorkspaceSaveParticipant(breakpointContextManager);
+		breakpointContextContributor = new BreakpointsContextContributor();
+		ContextCorePlugin.getDefault().addContextContributor(breakpointContextContributor);
+
+		breakpointContextListener = new BreakpointsContextListener(breakpointContextContributor);
+		ContextCore.getContextManager().addListener(breakpointContextListener);
+
+		workspaceSaveParticipant = new WorkspaceSaveParticipant(breakpointContextContributor);
 
 		ISavedState previousPluginState = ResourcesPlugin.getWorkspace().addSaveParticipant(PLUGIN_ID,
 				workspaceSaveParticipant);
@@ -81,8 +84,9 @@ public class Activator extends AbstractUIPlugin {
 		IPath path = previousPluginState.lookup(new Path(WORKSPACE_STATE_FILE));
 		File file = path.append(WORKSPACE_STATE_FILE).toFile();
 		FileInputStream inputStream = new FileInputStream(file);
-		List<IBreakpoint> importBreakpoints = BreakpointsContextUtil.importBreakpoints(inputStream);
-		breakpointContextManager.setContextBreakpoints(importBreakpoints);
+		//List<IBreakpoint> importBreakpoints = BreakpointsContextUtil.importBreakpoints(inputStream);
+		//breakpointContextContributor.setBreakpoints(importBreakpoints);
+		breakpointContextContributor.initBreakpointListener();
 	}
 
 	/*
@@ -95,9 +99,12 @@ public class Activator extends AbstractUIPlugin {
 	@Override
 	public void stop(BundleContext context) throws Exception {
 		plugin = null;
-		DebugPlugin.getDefault().getBreakpointManager().removeBreakpointListener(breakpointContextManager);
-		ContextCore.getContextManager().removeListener(breakpointContextManager);
-		breakpointContextManager = null;
+		ContextCore.getContextManager().removeListener(breakpointContextListener);
+		ContextCorePlugin.getDefault().removeContextContributor(breakpointContextContributor);
+
+		breakpointContextListener = null;
+		breakpointContextContributor = null;
+
 		ResourcesPlugin.getWorkspace().removeSaveParticipant(PLUGIN_ID);
 		workspaceSaveParticipant = null;
 		super.stop(context);
@@ -112,8 +119,8 @@ public class Activator extends AbstractUIPlugin {
 		return plugin;
 	}
 
-	public static BreakpointsContextManager getBreakpointContextManager() {
-		return breakpointContextManager;
+	public BreakpointsContextContributor getBreakpointContextContributor() {
+		return breakpointContextContributor;
 	}
 
 }

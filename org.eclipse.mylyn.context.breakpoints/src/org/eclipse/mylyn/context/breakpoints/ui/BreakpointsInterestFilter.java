@@ -11,7 +11,7 @@
 
 package org.eclipse.mylyn.context.breakpoints.ui;
 
-import java.util.List;
+import java.util.Set;
 
 import org.eclipse.core.resources.IMarker;
 import org.eclipse.debug.core.model.IBreakpoint;
@@ -27,7 +27,7 @@ public class BreakpointsInterestFilter extends AbstractMarkerInterestFilter {
 
 	@Override
 	public boolean select(Viewer viewer, Object parent, Object element) {
-		List<IBreakpoint> contextBreakpoints = Activator.getBreakpointContextManager().getContextBreakpoints();
+		Set<IBreakpoint> contextBreakpoints = Activator.getDefault().getBreakpointContextContributor().getBreakpoints();
 		if (contextBreakpoints.contains(element)) {
 			return true;
 		} else {

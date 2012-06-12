@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
+import java.util.Set;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IStatus;
@@ -34,13 +35,13 @@ import org.eclipse.mylyn.context.core.IInteractionContext;
  */
 public class BreakpointsContextUtil {
 
-	public static InputStream exportBreakpoints(List<IBreakpoint> breakpoints) {
-		if (breakpoints.size() == 0) {
+	public static InputStream exportBreakpoints(Set<IBreakpoint> set) {
+		if (set.size() == 0) {
 			return null;
 		}
 
 		ExportBreakpointsOperation exportBreakpointOperation = new ExportBreakpointsOperation(
-				breakpoints.toArray(new IBreakpoint[0]));
+				set.toArray(new IBreakpoint[0]));
 
 		try {
 			exportBreakpointOperation.run(null);
@@ -79,11 +80,9 @@ public class BreakpointsContextUtil {
 		return new ArrayList<IBreakpoint>();
 	}
 
-	public static void removeBreakpoints(List<IBreakpoint> breakpoints) {
+	public static void removeBreakpoints(Set<IBreakpoint> set) {
 		try {
-			DebugPlugin.getDefault()
-					.getBreakpointManager()
-					.removeBreakpoints(breakpoints.toArray(new IBreakpoint[0]), true);
+			DebugPlugin.getDefault().getBreakpointManager().removeBreakpoints(set.toArray(new IBreakpoint[0]), true);
 		} catch (CoreException e) {
 			StatusHandler.log(new Status(IStatus.WARNING, Activator.PLUGIN_ID,
 					"Could not remove obsolete breakpoints from workspace", e)); //$NON-NLS-1$

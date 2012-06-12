@@ -15,7 +15,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.List;
+import java.util.Set;
 
 import org.apache.commons.io.IOUtils;
 import org.eclipse.core.resources.ISaveContext;
@@ -30,17 +30,17 @@ import org.eclipse.debug.core.model.IBreakpoint;
 
 public class WorkspaceSaveParticipant implements ISaveParticipant {
 
-	private final BreakpointsContextManager breakpointContextManager;
+	private final BreakpointsContextContributor breakpointsContextContributor;
 
-	public WorkspaceSaveParticipant(BreakpointsContextManager breakpointsContextManager) {
-		this.breakpointContextManager = breakpointsContextManager;
+	public WorkspaceSaveParticipant(BreakpointsContextContributor breakpointsContextContributor) {
+		this.breakpointsContextContributor = breakpointsContextContributor;
 	}
 
 	public void saving(ISaveContext context) throws CoreException {
 		IPath stateLocation = getStateLocation();
 		File stateFile = resetStateFile(stateLocation);
 
-		List<IBreakpoint> contextBreakpoints = breakpointContextManager.getContextBreakpoints();
+		Set<IBreakpoint> contextBreakpoints = breakpointsContextContributor.getBreakpoints();
 		InputStream breakpoints = BreakpointsContextUtil.exportBreakpoints(contextBreakpoints);
 
 		if (breakpoints != null) {

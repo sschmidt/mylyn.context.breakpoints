@@ -20,11 +20,27 @@
       </action>
    	</viewContribution> 
    </extension>
-   <extension
-         point="org.eclipse.mylyn.context.core.contributor">
-      <contentContributor
-            class="org.eclipse.mylyn.internal.context.breakpoints.BreakpointsContextContributor"
-            name="Mylyn Breakpoints Contributor">
-      </contentContributor>
-   </extension>
+    <extension
+       id="org.eclipse.mylyn.context.breakpoints"
+       point="org.eclipse.ui.navigator.navigatorContent">
+    <navigatorContent
+          activeByDefault="true"
+          id="org.eclipse.mylyn.context.breakpoints.labelProvider"
+          labelProvider="org.eclipse.debug.internal.ui.views.breakpoints.BreakpointsLabelProvider"
+          name="Breakpoints Labelprovider">
+       <triggerPoints>
+       </triggerPoints>
+    </navigatorContent>
+ </extension>
+ <extension
+       point="org.eclipse.ui.navigator.viewer">
+    <viewerContentBinding
+          viewerId="org.eclipse.mylyn.context.ui.navigator.context">
+       <includes>
+          <contentExtension
+                pattern="org.eclipse.mylyn.context.breakpoints.labelProvider">
+          </contentExtension>
+       </includes>
+    </viewerContentBinding>
+ </extension>
 </plugin>
